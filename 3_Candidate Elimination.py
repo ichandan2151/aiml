@@ -14,7 +14,6 @@ def more_general(h1, h2):
     return all(more_general_parts)
 
 def fulfills(example, hypothesis):
-# the implementation is the same as for hypotheses:
     return more_general(hypothesis, example)
 
 def min_generalizations(h, x):
@@ -45,9 +44,7 @@ def generalize_S(x, G, S):
         if not fulfills(x, s):
             S.remove(s)
             Splus = min_generalizations(s, x)
-            ## keep only generalizations that have a counterpart in G
             S.update([h for h in Splus if any([more_general(g,h) for g in G])])
-            ## remove hypotheses less specific than any other in S
             S.difference_update([h for h in S if any([more_general(h, h1) for h1 in S if h != h1])])
     return S
 
@@ -59,9 +56,7 @@ def specialize_G(x, domains, G, S):
         if fulfills(x, g):
             G.remove(g)
             Gminus = min_specializations(g, domains, x)
-            ## keep only specializations that have a conuterpart in S
             G.update([h for h in Gminus if any([more_general(h, s) for s in S])])
-            ## remove hypotheses less general than any other in G
             G.difference_update([h for h in G if any([more_general(g1, h) for g1 in G if h != g1])])
             
     return G
