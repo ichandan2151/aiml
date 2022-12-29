@@ -43,7 +43,6 @@ class Graph:
             for c, weight in nodeInfoTupleList:
                 cost=cost+self.getHeuristicNodeValue(c)+weight
                 nodeList.append(c)
-            
             if flag==True:                      
                 minimumCost=cost
                 costToChildNodeListDict[minimumCost]=nodeList      
@@ -51,9 +50,7 @@ class Graph:
             else:                               
                 if minimumCost>cost:
                     minimumCost=cost
-                    costToChildNodeListDict[minimumCost]=nodeList  
-                
-              
+                    costToChildNodeListDict[minimumCost]=nodeList   
         return minimumCost, costToChildNodeListDict[minimumCost]   
                      
     
@@ -87,8 +84,7 @@ class Graph:
                 for childNode in childNodeList:  
                     self.setStatus(childNode,0)   
                     self.aoStar(childNode, False) 
-                 
-        
+   
                                        
 h1 = {'A': 1, 'B': 6, 'C': 2, 'D': 12, 'E': 2, 'F': 1, 'G': 5, 'H': 7, 'I': 7, 'J': 1, 'T': 3}
 graph1 = {
