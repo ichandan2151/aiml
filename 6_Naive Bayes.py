@@ -6,22 +6,19 @@ def loadCsv(filename):
     lines = csv.reader(open(filename, "r"));
     dataset = list(lines)
     for i in range(len(dataset)):
-#converting strings into numbers for processing
+
         dataset[i] = [float(x) for x in dataset[i]]
     return dataset
 def splitDataset(dataset, splitRatio):
-#67% training size
     trainSize = int(len(dataset) * splitRatio);
     trainSet = []
     copy = list(dataset);
     while len(trainSet) < trainSize:
-#generate indices for the dataset list randomly to pick ele for training data
         index = random.randrange(len(copy));
         trainSet.append(copy.pop(index))
     return [trainSet, copy]
 def separateByClass(dataset):
     separated = {}
-#creates a dictionary of classes 1 and 0 where the values are the instacnes belonging to each class
     for i in range(len(dataset)):
         vector = dataset[i]
         if (vector[-1] not in separated):
@@ -42,7 +39,6 @@ def summarizeByClass(dataset):
     separated = separateByClass(dataset);
     summaries = {}
     for classValue, instances in separated.items():
-#summaries is a dic of tuples(mean,std) for each class value
         summaries[classValue] = summarize(instances)
     return summaries
 def calculateProbability(x, mean, stdev):
@@ -50,17 +46,17 @@ def calculateProbability(x, mean, stdev):
     return (1 / (math.sqrt(2*math.pi) * stdev)) * exponent
 def calculateClassProbabilities(summaries, inputVector):
     probabilities = {}
-    for classValue, classSummaries in summaries.items():#class and attribute information as mean and sd
+    for classValue, classSummaries in summaries.items():
         probabilities[classValue] = 1
         for i in range(len(classSummaries)):
-            mean, stdev = classSummaries[i] #take mean and sd of every attribute for class 0 and 1 seperaely
-            x = inputVector[i] #testvector's first attribute
-            probabilities[classValue] *= calculateProbability(x, mean, stdev);#use normal dist
+            mean, stdev = classSummaries[i] 
+            x = inputVector[i]
+            probabilities[classValue] *= calculateProbability(x, mean, stdev);
     return probabilities
 def predict(summaries, inputVector):
     probabilities = calculateClassProbabilities(summaries, inputVector)
     bestLabel, bestProb = None, -1
-    for classValue, probability in probabilities.items():#assigns that class which has he highest prob
+    for classValue, probability in probabilities.items():
         if bestLabel is None or probability > bestProb:
             bestProb = probability
             bestLabel = classValue
@@ -83,9 +79,7 @@ def main():
     dataset = loadCsv(filename);
     trainingSet, testSet = splitDataset(dataset, splitRatio)
     print('Split {0} rows into train={1} and test={2} rows'.format(len(dataset),len(trainingSet), len(testSet)))
-# prepare model
     summaries = summarizeByClass(trainingSet);
-# test model
     predictions = getPredictions(summaries, testSet)
     accuracy = getAccuracy(testSet, predictions)
     print('Accuracy of the classifier is : {0}%'.format(accuracy))
