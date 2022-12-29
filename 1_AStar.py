@@ -7,15 +7,12 @@ def aStarAlgo(start_node, stop_node):
         parents = {} 
         g[start_node] = 0
         parents[start_node] = start_node
-         
-         
         while len(open_set) > 0:
             n = None
             for v in open_set:
                 if n == None or g[v] + heuristic(v) < g[n] + heuristic(n):
                     n = v
              
-                     
             if n == stop_node or Graph_nodes[n] == None:
                 pass
             else:
@@ -80,4 +77,3 @@ Graph_nodes = {
      
 }
 aStarAlgo('A', 'J')
-
