@@ -23,7 +23,7 @@ def localWeightRegression(xmat,ymat,k):
     return ypred
 
 def graphPlot(X,ypred):
-    sortindex = X[:,1].argsort(0) #argsort - index of the smallest
+    sortindex = X[:,1].argsort(0)
     xsort = X[sortindex][:,0]
     fig = plt.figure()
     ax = fig.add_subplot(1,1,1)
@@ -32,15 +32,14 @@ def graphPlot(X,ypred):
     plt.xlabel('Total bill')
     plt.ylabel('Tip')
     plt.show();
-# load data points
+
 data = pd.read_csv('9.csv')
-bill = np.array(data.total_bill) # We use only Bill amount and Tips data
+bill = np.array(data.total_bill) 
 tip = np.array(data.tip)
-mbill = np.mat(bill) # .mat will convert nd array is converted in 2D array
+mbill = np.mat(bill) 
 mtip = np.mat(tip)
 m= np.shape(mbill)[1]
 one = np.mat(np.ones(m))
-X = np.hstack((one.T,mbill.T)) # 244 rows, 2 cols
-# increase k to get smooth curves
+X = np.hstack((one.T,mbill.T)) 
 ypred = localWeightRegression(X,mtip,3)
 graphPlot(X,ypred)
